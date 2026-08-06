@@ -1,98 +1,74 @@
-workspace "ML Platform" "Machine learning model serving platform." {
+workspace "Local Kubernetes Cluster" "Local development platform running Python applications on a local Kubernetes cluster." {
 
     !identifiers hierarchical
     !impliedRelationships false
 
-    configuration {
-        scope softwaresystem
-    }
-
     model {
-        customer = person "Customer" "Customer using the app" "External"
-        data_scientist = person "Data Scientist" "Data scientist developing a machine learning model" "External"
-        
-        ml_platform = softwareSystem "ML Platform" "Machine learning model serving platform exposing models over REST and Kafka." {
+        developer = person "Developer" "Engineer running and deploying the applications locally." "External"
 
-            !docs ./docs
-            !adrs ./decisions
+        platform = softwareSystem "Local Kubernetes Platform" "Runs the FastAPI and Django applications on a local k3d Kubernetes cluster." {
+            fastapi_service = container "FastAPI Service" "Serves REST API endpoints." "Python, FastAPI" {
+                api_router = component "API Router" "Routes incoming HTTP requests." "FastAPI"
+                service_layer = component "Services" "Implements business logic." "Python"
+                repository_layer = component "Repositories" "Handles data access." "Python"
+                schema_layer = component "Schemas" "Defines request and response models." "Pydantic"
 
-            sidecar = container "Model sidecar application" "Ambassador sidecar for ML model" "Python, Flask" {
-                streaming_module = component "Streaming module" "Reads prediction requests from Kafka topic and returns predictions to another." {
-                }
-    
-                rest_module = component "REST module" "Receives prediction requests and returns response."
+                api_router -> service_layer "Calls"
+                api_router -> schema_layer "Validates with"
+                service_layer -> repository_layer "Uses"
             }
-            
-            model_container = container "Model" "Machine learning model serving predictions" "Python" {
-                ml_platform.sidecar -> this "Sends request to" "GRPC"
-                model_module = component "Python model implementation" "Python Model class implementing __init__ and predict methods" {
-                    data_scientist -> this "Develops" "IDE"
-                }
-    
-                api_module = component "Model wrapper" "Python model wrapper serving predictions using a Dataframe => Dataframe interface." {
-                    ml_platform.sidecar.rest_module -> this "Requests prediction from" "GRPC"
-                    ml_platform.sidecar.streaming_module -> this "Requests prediction from" "GRPC"
-                    this -> model_module "Initializes and calls model." "In-process"
-                }
-            }
-        }
-        
-        logging = softwareSystem "Log aggregator" "Logging system based on ELK stack" "External" {
-            ml_platform.sidecar -> this "Sends logs to" "Kafka"
-            ml_platform.model_container -> this "Sends logs to" "Filebeat"
-        }
-        
-        RTK = softwareSystem "Metrics collector" "Reliability toolkit supporting web application monitoring" "External" {
-            ml_platform.sidecar -> this "Exposes metrics to" "HTTP"
+
+            django_service = container "Django Service" "Serves the Django web application." "Python, Django"
+
+            database = container "Application Database" "Stores application data." "PostgreSQL" "Database"
+
+            fastapi_service -> database "Reads from and writes to" "SQL"
+            django_service -> database "Reads from and writes to" "SQL"
         }
 
-        rest_client = softwareSystem "Backend application A" "Any application that makes use of a REST machine learning model" "External" {
-            this -> ml_platform.sidecar.rest_module "Requests prediction from" "HTTP"
-        }
-        
-        streaming_client = softwareSystem "Backend application B" "Any application that makes use of a streaming machine learning model" "External" {
-            this -> ml_platform.sidecar.streaming_module "Sends prediction to" "Kafka"
-        }
-        
-        client_fe = softwareSystem "FE application" "Client frontend web application" "External,FE" {
-            this -> rest_client "Requests information from" "HTTP"
-            this -> streaming_client "Requests information from" "HTTP"
-            customer -> this "Uses" "HTTPS"
-        }
+        vault = softwareSystem "Vault" "Stores and injects application secrets." "External"
+        argocd = softwareSystem "ArgoCD" "Continuously deploys the platform from Git using GitOps." "External"
+        monitoring = softwareSystem "Monitoring" "Collects and visualises metrics from the platform." "External"
+        logging = softwareSystem "Logging" "Collects and indexes application and container logs." "External"
+        sonarqube = softwareSystem "SonarQube" "Analyses code quality and test coverage." "External"
 
-        rest_client -> ml_platform "Requests prediction from" "HTTP"
-        streaming_client -> ml_platform "Sends prediction to" "Kafka"
+        developer -> platform "Develops and runs locally"
+        developer -> argocd "Configures deployments in"
+        platform.fastapi_service -> vault "Reads secrets from"
+        platform.django_service -> vault "Reads secrets from"
+        platform -> logging "Sends logs to"
+        platform -> monitoring "Exposes metrics to"
+        argocd -> platform "Deploys"
+        sonarqube -> platform "Analyses source code of"
     }
 
     views {
-        systemContext ml_platform "SystemContext-MLPlatform" {
-            include *
-            include customer
-            include client_fe
-            autolayout lr
-        }
-
-        container ml_platform "Container-MLPlatform" {
+        systemLandscape "SystemLandscape" {
             include *
             autolayout lr
         }
 
-        component ml_platform.model_container "Component-Model" {
+        systemContext platform "SystemContext" {
             include *
             autolayout lr
         }
 
-        component ml_platform.sidecar "Component-Sidecar" {
+        container platform "Containers" {
             include *
             autolayout lr
         }
-                
+
+        component platform.fastapi_service "Components" {
+            include *
+            autolayout lr
+        }
+
         styles {
             element "External" {
                 background #cccccc
             }
-            element "FE" {
-                shape WebBrowser
+            element "Database" {
+                shape Cylinder
             }
         }
     }
