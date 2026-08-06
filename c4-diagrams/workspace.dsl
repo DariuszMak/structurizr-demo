@@ -72,8 +72,22 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
 
         styles {
             element "External" {
-                background #cccccc
+                background #888888
+                color #ffffff
+                stroke #444444
+                strokeWidth 2
+                border Dashed
+                shape RoundedBox
+                opacity 90
             }
+            
+            element "External Person" {
+                shape Person
+                background #777777
+                color #ffffff
+                border Dashed
+            }
+
             element "Database" {
                 shape Cylinder
             }
