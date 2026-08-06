@@ -64,9 +64,9 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
         }
         styles {
             element "External" {
-                background #888888
+                background #617696
                 color #ffffff
-                stroke #444444
+                stroke #223344
                 strokeWidth 2
                 border Dashed
                 shape RoundedBox
@@ -74,7 +74,7 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
             }
             element "External Person" {
                 shape Person
-                background #777777
+                background #617696
                 color #ffffff
                 border Dashed
             }
