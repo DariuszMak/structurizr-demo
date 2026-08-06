@@ -192,14 +192,14 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
 
             element "Software System" {
                 shape RoundedBox
-                background #4E0B8D
-                stroke #58028A
+                background #7738A1
+                stroke #5B2B77
                 strokeWidth 3
             }
 
             element "Component" {
                 shape RoundedBox
-                background #A74949
+                background #A03E3E
                 stroke #6E201E
             }
 
