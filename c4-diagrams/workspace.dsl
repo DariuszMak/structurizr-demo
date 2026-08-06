@@ -63,52 +63,80 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
             autolayout lr
         }
         styles {
-            element "External" {
-                background #617696
-                color #ffffff
-                stroke #223344
+            element "Element" {
+                color #DFDADA
+                fontSize 20
                 strokeWidth 2
-                border Dashed
-                shape RoundedBox
-                opacity 80           
-                fontSize 20          
-                metadata false   
+                metadata false     
             }
 
+            element "Person" {
+                shape Person
+                background #0F766E  
+                stroke #134E4A
+                strokeWidth 3
+            }
             element "External Person" {
                 shape Person
-                background #617696
-                color #ffffff
-                stroke #223344
-                strokeWidth 2
+                background #94A3B8  
+                stroke #64748B
                 border Dashed
                 opacity 80
             }
 
-            element "Database" {
-                shape Cylinder
-                background #f26419   
-                color #ffffff
-                stroke #a74511
-                strokeWidth 2
-                opacity 90
+            element "Software System" {
+                shape RoundedBox
+                background #4338CA  
+                stroke #312E81
+                strokeWidth 3
+            }
+            element "Container" {
+                shape RoundedBox
+                background #3B82F6  
+                stroke #1D4ED8
             }
 
-            element "Internal" {
-                background #1168bd   
-                color #ffffff
+            element "Web App" {
+                shape WebBrowser
+                background #0EA5E9  
+                stroke #0369A1
+            }
+            element "Mobile App" {
+                shape MobileDevicePortrait
+                background #0EA5E9
+                stroke #0369A1
+            }
+
+            element "Database" {
+                shape Cylinder
+                background #10B981  
+                stroke #047857
+            }
+            element "Message Bus" {
+                shape Pipe          
+                background #F59E0B  
+                stroke #B45309
+            }
+
+            element "External System" {
                 shape RoundedBox
-                stroke #0b4884
-                strokeWidth 2
-                fontSize 22          
+                background #64748B  
+                stroke #475569
+                border Dashed
+                opacity 80
             }
 
             relationship "Relationship" {
-                thickness 2          
-                color #707070        
-                dashed false         
-                routing Orthogonal   
-                fontSize 16          
+                thickness 2
+                color #475569
+                dashed false
+                routing Orthogonal
+                fontSize 16
+            }
+
+            relationship "Async" {
+                dashed true
+                color #F59E0B      
             }
         }
     }
