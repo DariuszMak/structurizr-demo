@@ -63,7 +63,7 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
             autolayout lr
         }
         styles {
-            
+
             element "External" {
                 background #617696
                 color #ffffff
@@ -76,7 +76,6 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
                 metadata false   
             }
 
-            
             element "External Person" {
                 shape Person
                 background #617696
@@ -87,7 +86,6 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
                 opacity 80
             }
 
-            
             element "Database" {
                 shape Cylinder
                 background #f26419   
@@ -97,7 +95,6 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
                 opacity 90
             }
 
-            
             element "Internal" {
                 background #1168bd   
                 color #ffffff
