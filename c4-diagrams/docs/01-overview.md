@@ -8,5 +8,5 @@ The platform provides a standardised way to deploy and serve machine learning mo
 
 ## Containers
 
-- **Model sidecar application** — Ambassador sidecar handling protocol translation (HTTP/Kafka → GRPC).
-- **Model** — The Python model container serving predictions via GRPC.
+- **Model sidecar application** - Ambassador sidecar handling protocol translation (HTTP/Kafka → GRPC).
+- **Model** - The Python model container serving predictions via GRPC.
