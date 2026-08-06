@@ -1,12 +1,13 @@
-# ML Platform
+# Local Kubernetes Platform
 
-The ML Platform is a machine learning model serving platform exposing models over REST and Kafka.
+The Local Kubernetes Platform runs Python applications on a local k3d Kubernetes cluster for development purposes.
 
 ## Purpose
 
-The platform provides a standardised way to deploy and serve machine learning models, supporting both synchronous REST and asynchronous streaming (Kafka) interfaces.
+The platform provides a standardised local environment for running and testing a FastAPI service and a Django service, backed by a shared PostgreSQL database, with secrets management, GitOps deployment, monitoring, logging, and code quality analysis provided by supporting tools.
 
 ## Containers
 
-- **Model sidecar application** — Ambassador sidecar handling protocol translation (HTTP/Kafka → GRPC).
-- **Model** — The Python model container serving predictions via GRPC.
+- **FastAPI Service** - Serves REST API endpoints.
+- **Django Service** - Serves the Django web application.
+- **Application Database** - PostgreSQL database shared by both services.
