@@ -63,6 +63,7 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
             autolayout lr
         }
         styles {
+            
             element "External" {
                 background #617696
                 color #ffffff
@@ -70,16 +71,48 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
                 strokeWidth 2
                 border Dashed
                 shape RoundedBox
-                opacity 90
+                opacity 80           
+                fontSize 20          
+                metadata false   
             }
+
+            
             element "External Person" {
                 shape Person
                 background #617696
                 color #ffffff
+                stroke #223344
+                strokeWidth 2
                 border Dashed
+                opacity 80
             }
+
+            
             element "Database" {
                 shape Cylinder
+                background #f26419   
+                color #ffffff
+                stroke #a74511
+                strokeWidth 2
+                opacity 90
+            }
+
+            
+            element "Internal" {
+                background #1168bd   
+                color #ffffff
+                shape RoundedBox
+                stroke #0b4884
+                strokeWidth 2
+                fontSize 22          
+            }
+
+            relationship "Relationship" {
+                thickness 2          
+                color #707070        
+                dashed false         
+                routing Orthogonal   
+                fontSize 16          
             }
         }
     }
