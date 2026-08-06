@@ -86,31 +86,31 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
 
             element "Software System" {
                 shape RoundedBox
-                background #4338CA  
-                stroke #312E81
+                background #0B3F8D  
+                stroke #023D8A
                 strokeWidth 3
             }
             element "Container" {
                 shape RoundedBox
-                background #3B82F6  
-                stroke #1D4ED8
+                background #005EB6  
+                stroke #0B3C86
             }
 
             element "Web App" {
                 shape WebBrowser
-                background #0EA5E9  
-                stroke #0369A1
+                background #005EB6  
+                stroke #0B3C86
             }
             element "Mobile App" {
                 shape MobileDevicePortrait
-                background #0EA5E9
-                stroke #0369A1
+                background #005EB6  
+                stroke #0B3C86
             }
 
             element "Database" {
                 shape Cylinder
-                background #10B981  
-                stroke #047857
+                background #06885D  
+                stroke #065740
             }
             element "Message Bus" {
                 shape Pipe          
@@ -120,15 +120,15 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
 
             element "External System" {
                 shape RoundedBox
-                background #64748B  
-                stroke #475569
+                background #7189AA  
+                stroke #6683AC
                 border Dashed
                 opacity 80
             }
 
             relationship "Relationship" {
                 thickness 2
-                color #475569
+                color #EEEA1E
                 dashed false
                 routing Orthogonal
                 fontSize 16
