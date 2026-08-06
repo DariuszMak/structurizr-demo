@@ -1,6 +1,6 @@
 workspace "Local Kubernetes Cluster" "Local development platform running Python applications on a local Kubernetes cluster." {
     !identifiers hierarchical
-    !impliedRelationships true
+    !impliedRelationships false
     configuration {
         scope softwaresystem
     }
