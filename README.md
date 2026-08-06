@@ -1,9 +1,4 @@
-# Python project
-
-## Requirements
-
-- [UV](https://github.com/astral-sh/uv) package manager
-
+# C4 Diagrams Project
 
 ```commandline
 clear ; 
