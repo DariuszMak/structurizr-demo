@@ -63,7 +63,6 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
             autolayout lr
         }
         styles {
-
             element "External" {
                 background #617696
                 color #ffffff
