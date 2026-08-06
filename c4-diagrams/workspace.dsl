@@ -12,7 +12,6 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
         developer = person "Developer" "Engineer running and deploying applications locally." "External"
 
         platform = softwareSystem "Local Kubernetes Platform" "Runs FastAPI and Django applications on a local k3d Kubernetes cluster." {
-            
             fastapi_service = container "FastAPI Service" "Serves REST API endpoints." "Python, FastAPI" {
                 fastapi_api_router = component "API Router" "Routes incoming HTTP requests to endpoints." "FastAPI"
                 fastapi_auth_service = component "Auth Service" "Handles JWT token creation and validation." "Python"
@@ -31,10 +30,14 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
                 fastapi_api_router -> fastapi_user_service "Calls" "In-process"
                 fastapi_api_router -> fastapi_health_router "Calls" "In-process"
                 fastapi_api_router -> fastapi_schema_layer "Validates with" "In-process"
+                fastapi_api_router -> fastapi_logging_setup "Initializes and logs via" "In-process"
 
+                fastapi_auth_service -> fastapi_security_helper "Uses" "In-process"
                 fastapi_post_service -> fastapi_post_repository "Uses" "In-process"
                 fastapi_user_service -> fastapi_user_repository "Uses" "In-process"
-                fastapi_auth_service -> fastapi_security_helper "Uses" "In-process"
+
+                fastapi_post_repository -> fastapi_db_session "Executes queries via" "In-process"
+                fastapi_user_repository -> fastapi_db_session "Executes queries via" "In-process"
             }
 
             django_service = container "Django Service" "Serves Django web application." "Python, Django" {
@@ -54,12 +57,27 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
                 django_auth_service = component "Auth Service" "Handles JWT token creation." "Python"
                 django_logging_setup = component "Logging Setup" "Configures structlog handlers." "Python"
 
+                django_core_wsgi -> django_core_settings "Loads settings on startup" "In-process"
+                django_core_wsgi -> django_core_urls "Dispatches HTTP requests to" "In-process"
+
+                django_core_settings -> django_logging_setup "Configures" "In-process"
+
+                django_core_urls -> django_users_app "Routes user requests to" "In-process"
+                django_core_urls -> django_posts_app "Routes post requests to" "In-process"
+                django_core_urls -> django_auth_app "Routes auth requests to" "In-process"
+                django_core_urls -> django_health_app "Routes health check requests to" "In-process"
+
+                django_auth_app -> django_auth_service "Calls" "In-process"
+                django_auth_app -> django_core_authentication "Authenticates with" "In-process"
+
                 django_users_app -> django_users_service "Calls" "In-process"
                 django_users_app -> django_users_repository "Uses" "In-process"
+                django_users_app -> django_core_exceptions "Delegates error handling to" "In-process"
+
                 django_posts_app -> django_posts_service "Calls" "In-process"
                 django_posts_app -> django_posts_repository "Uses" "In-process"
                 django_posts_app -> django_users_app "Provides user references for posts" "Django ORM"
-                django_auth_app -> django_auth_service "Calls" "In-process"
+                django_posts_app -> django_core_exceptions "Delegates error handling to" "In-process"
 
                 django_users_service -> django_users_repository "Uses" "In-process"
                 django_posts_service -> django_posts_repository "Uses" "In-process"
@@ -80,8 +98,9 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
             elasticsearch = container "Elasticsearch" "Log indexing and search." "Elasticsearch"
             kibana = container "Kibana" "Log visualization and exploration." "Kibana"
 
-            fastapi_service -> fastapi_database "Reads from, writes to, and migrates via Alembic" "SQL"
-            django_service -> django_database "Reads from, writes to, and migrates via Django ORM" "SQL"
+            fastapi_service.fastapi_db_session -> fastapi_database "Reads from, writes to, and migrates via Alembic" "SQL"
+            django_service.django_users_repository -> django_database "Reads from and writes to" "SQL"
+            django_service.django_posts_repository -> django_database "Reads from and writes to" "SQL"
         }
 
         k3d_cluster = softwareSystem "k3d Cluster" "Local Kubernetes runtime environment." "External"
