@@ -1,5 +1,14 @@
 # C4 Diagrams Project
 
+## Requirements
+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+
+
+## Local development (Windows PowerShell)
+
+### Native development
+
 ```commandline
 clear ; 
 
@@ -20,6 +29,7 @@ Start-Sleep -Seconds 10 ;
 Start-Process "http://127.0.0.1:8081" ; 
 ```
 
+### Exported `.svg` images
 
 <table align="center">
   <tr>
