@@ -12,6 +12,10 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
         developer = person "Developer" "Engineer running and deploying applications locally." "External"
 
         platform = softwareSystem "Local Kubernetes Platform" "Runs FastAPI and Django applications on a local k3d Kubernetes cluster." {
+
+            !docs ./docs
+            !adrs ./decisions
+
             fastapi_service = container "FastAPI Service" "Serves REST API endpoints." "Python, FastAPI" {
                 fastapi_api_router = component "API Router" "Routes incoming HTTP requests to endpoints." "FastAPI"
                 fastapi_auth_service = component "Auth Service" "Handles JWT token creation and validation." "Python"
