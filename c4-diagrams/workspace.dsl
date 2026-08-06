@@ -17,17 +17,33 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
             !adrs ./decisions
 
             fastapi_service = container "FastAPI Service" "Serves REST API endpoints." "Python, FastAPI" {
-                fastapi_api_router = component "API Router" "Routes incoming HTTP requests to endpoints." "FastAPI"
-                fastapi_auth_service = component "Auth Service" "Handles JWT token creation and validation." "Python"
-                fastapi_post_service = component "Post Service" "Implements post CRUD business logic." "Python"
-                fastapi_user_service = component "User Service" "Implements user CRUD business logic." "Python"
-                fastapi_post_repository = component "Post Repository" "Handles post data access." "Python"
-                fastapi_user_repository = component "User Repository" "Handles user data access." "Python"
+                fastapi_api_router = component "API Router" "Routes incoming HTTP requests to endpoints." "FastAPI"{
+                    tags "Python"
+                }
+                fastapi_auth_service = component "Auth Service" "Handles JWT token creation and validation." "Python"{
+                    tags "Python"
+                }
+                fastapi_post_service = component "Post Service" "Implements post CRUD business logic." "Python"{
+                    tags "Python"
+                }
+                fastapi_user_service = component "User Service" "Implements user CRUD business logic." "Python"{
+                    tags "Python"
+                }
+                fastapi_post_repository = component "Post Repository" "Handles post data access." "Python"{
+                    tags "Python"
+                }
+                fastapi_user_repository = component "User Repository" "Handles user data access." "Python"{
+                    tags "Python"
+                }
                 fastapi_health_router = component "Health Router" "Exposes liveness and readiness probes." "FastAPI"
                 fastapi_schema_layer = component "Schemas" "Defines request and response models." "Pydantic"
                 fastapi_db_session = component "DB Session" "Manages async database sessions." "SQLAlchemy"
-                fastapi_security_helper = component "Security Helper" "Handles JWT encoding/decoding." "Python"
-                fastapi_logging_setup = component "Logging Setup" "Configures structlog handlers." "Python"
+                fastapi_security_helper = component "Security Helper" "Handles JWT encoding/decoding." "Python"{
+                    tags "Python"
+                }
+                fastapi_logging_setup = component "Logging Setup" "Configures structlog handlers." "Python"{
+                    tags "Python"
+                }
 
                 fastapi_api_router -> fastapi_auth_service "Calls" "In-process"
                 fastapi_api_router -> fastapi_post_service "Calls" "In-process"
@@ -49,17 +65,39 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
                 django_posts_app = component "Posts App" "Manages posts and related content." "Django App"
                 django_auth_app = component "Auth App" "Handles authentication endpoints." "Django App"
                 django_health_app = component "Health App" "Exposes health check endpoints." "Django App"
-                django_core_settings = component "Core Settings" "Django configuration and environment loading." "Python"
-                django_core_authentication = component "Core Authentication" "Custom JWT authentication backend." "Python"
-                django_core_exceptions = component "Core Exceptions" "Global exception handling." "Python"
-                django_core_urls = component "Core URLs" "Django URL routing and schema views." "Python"
-                django_core_wsgi = component "Core WSGI" "WSGI application entry point." "Python"
-                django_users_repository = component "Users Repository" "Handles user data access." "Python"
-                django_posts_repository = component "Posts Repository" "Handles post data access." "Python"
-                django_users_service = component "Users Service" "Implements user business logic." "Python"
-                django_posts_service = component "Posts Service" "Implements post business logic." "Python"
-                django_auth_service = component "Auth Service" "Handles JWT token creation." "Python"
-                django_logging_setup = component "Logging Setup" "Configures structlog handlers." "Python"
+                django_core_settings = component "Core Settings" "Django configuration and environment loading." "Python"{
+                    tags "Python"
+                }
+                django_core_authentication = component "Core Authentication" "Custom JWT authentication backend." "Python"{
+                    tags "Python"
+                }
+                django_core_exceptions = component "Core Exceptions" "Global exception handling." "Python"{
+                    tags "Python"
+                }
+                django_core_urls = component "Core URLs" "Django URL routing and schema views." "Python"{
+                    tags "Python"
+                }
+                django_core_wsgi = component "Core WSGI" "WSGI application entry point." "Python"{
+                    tags "Python"
+                }
+                django_users_repository = component "Users Repository" "Handles user data access." "Python"{
+                    tags "Python"
+                }
+                django_posts_repository = component "Posts Repository" "Handles post data access." "Python"{
+                    tags "Python"
+                }
+                django_users_service = component "Users Service" "Implements user business logic." "Python"{
+                    tags "Python"
+                }
+                django_posts_service = component "Posts Service" "Implements post business logic." "Python"{
+                    tags "Python"
+                }
+                django_auth_service = component "Auth Service" "Handles JWT token creation." "Python"{
+                    tags "Python"
+                }
+                django_logging_setup = component "Logging Setup" "Configures structlog handlers." "Python"{
+                    tags "Python"
+                }
 
                 django_core_wsgi -> django_core_settings "Loads settings on startup" "In-process"
                 django_core_wsgi -> django_core_urls "Dispatches HTTP requests to" "In-process"
@@ -252,6 +290,10 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
             relationship "Async" {
                 dashed true
                 color #F59E0B
+            }
+
+            element "Python" {
+                icon "icons/python.png"
             }
         }
     }
