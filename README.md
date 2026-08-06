@@ -13,7 +13,7 @@ docker system df ;
 
 git reset --hard HEAD ; 
 git clean -x -d -f ; 
- 
+
 docker run -it --rm -d -p 8081:8080 -v ${PWD}/c4-diagrams:/usr/local/structurizr -e STRUCTURIZR_WORKSPACE_FILENAME=ml_platform_architecture structurizr/structurizr local
 
 Start-Sleep -Seconds 10 ; 
