@@ -156,3 +156,4 @@ GitHub.sublime-settings
 
 # Structurizr
 workspace.json
+c4-diagrams/*.json
