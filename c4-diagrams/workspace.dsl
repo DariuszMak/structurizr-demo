@@ -175,9 +175,9 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
 
         k3d_cluster = softwareSystem "k3d Cluster" "Local Kubernetes runtime environment." "External"
         argo_cd = softwareSystem "ArgoCD" "Continuously deploys the platform from Git using GitOps." "External"
-        vault = softwareSystem "HashiCorp Vault" "Stores and injects application secrets." "External"
+        vault = softwareSystem "HashiCorp Vault" "Stores and injects application secrets." "External, Vault"
         monitoring_system = softwareSystem "Monitoring Stack" "Collects and visualises metrics from the platform using Prometheus, Grafana, and Tempo." "External"
-        logging_system = softwareSystem "Logging Stack" "Collects and indexes application and container logs using Elasticsearch and Kibana." "External"
+        logging_system = softwareSystem "Logging Stack" "Collects and indexes application and container logs using Elasticsearch and Kibana." "External, Elastic"
         sonarqube = softwareSystem "SonarQube" "Analyses code quality and test coverage." "External"
         tilt = softwareSystem "Tilt" "Local development environment orchestrator for live-update deployments." "External"
         task_runner = softwareSystem "Task" "Cross-platform task runner for automation scripts." "External"
@@ -330,6 +330,10 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
 
             element "Django" {
                 icon "icons/Django.png"
+            }
+
+            element "Vault" {
+                icon "icons/Vault.png"
             }
 
             element "Pydantic" {
