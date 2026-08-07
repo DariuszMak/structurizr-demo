@@ -306,6 +306,10 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
                 icon "icons/Django.png"
             }
 
+            element "Pydantic" {
+                icon "icons/Pydantic.png"
+            }
+
             element "Database" {
                 icon "icons/Database.png"
             }
