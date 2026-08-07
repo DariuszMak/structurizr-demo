@@ -297,11 +297,11 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
             }
 
             element "FastAPI" {
-                icon "icons/Python.png"
+                icon "icons/FastAPI.png"
             }
 
             element "Django" {
-                icon "icons/Python.png"
+                icon "icons/Django.png"
             }
 
             element "Database" {
