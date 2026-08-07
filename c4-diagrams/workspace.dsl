@@ -174,12 +174,12 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
         }
 
         k3d_cluster = softwareSystem "k3d Cluster" "Local Kubernetes runtime environment." "External"
-        argo_cd = softwareSystem "ArgoCD" "Continuously deploys the platform from Git using GitOps." "External"
+        argo_cd = softwareSystem "ArgoCD" "Continuously deploys the platform from Git using GitOps." "External, Argo"
         vault = softwareSystem "HashiCorp Vault" "Stores and injects application secrets." "External, Vault"
         monitoring_system = softwareSystem "Monitoring Stack" "Collects and visualises metrics from the platform using Prometheus, Grafana, and Tempo." "External"
         logging_system = softwareSystem "Logging Stack" "Collects and indexes application and container logs using Elasticsearch and Kibana." "External, Elastic"
-        sonarqube = softwareSystem "SonarQube" "Analyses code quality and test coverage." "External"
-        tilt = softwareSystem "Tilt" "Local development environment orchestrator for live-update deployments." "External"
+        sonarqube = softwareSystem "SonarQube" "Analyses code quality and test coverage." "External, Sonarqube"
+        tilt = softwareSystem "Tilt" "Local development environment orchestrator for live-update deployments." "External, Tilt"
         task_runner = softwareSystem "Task" "Cross-platform task runner for automation scripts." "External"
 
         developer -> platform "Develops and runs locally" "Task, Tilt, kubectl, Kustomize, Helm"
@@ -382,6 +382,18 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
 
             element "Helm" {
                 icon "icons/Helm.png"
+            }
+
+            element "Argo" {
+                icon "icons/Argo.png"
+            }
+
+            element "Sonarqube" {
+                icon "icons/Sonarqube.png"
+            }
+
+            element "Tilt" {
+                icon "icons/Tilt.jpeg"
             }
 
             element "HTTPS" {
