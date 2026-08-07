@@ -171,16 +171,18 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
             fastapi_service.fastapi_db_session -> fastapi_database "Reads from, writes to, and migrates via Alembic" "SQL"
             django_service.django_users_repository -> django_database "Reads from and writes to" "SQL"
             django_service.django_posts_repository -> django_database "Reads from and writes to" "SQL"
+
+            tags "Kubernetes"
         }
 
-        k3d_cluster = softwareSystem "k3d Cluster" "Local Kubernetes runtime environment." "External"
+        k3d_cluster = softwareSystem "k3d Cluster" "Local Kubernetes runtime environment." "External, k3d"
         argo_cd = softwareSystem "ArgoCD" "Continuously deploys the platform from Git using GitOps." "External, Argo"
         vault = softwareSystem "HashiCorp Vault" "Stores and injects application secrets." "External, Vault"
         monitoring_system = softwareSystem "Monitoring Stack" "Collects and visualises metrics from the platform using Prometheus, Grafana, and Tempo." "External, Elastic"
         logging_system = softwareSystem "Logging Stack" "Collects and indexes application and container logs using Elasticsearch and Kibana." "External, Filebeat"
         sonarqube = softwareSystem "SonarQube" "Analyses code quality and test coverage." "External, Sonarqube"
         tilt = softwareSystem "Tilt" "Local development environment orchestrator for live-update deployments." "External, Tilt"
-        task_runner = softwareSystem "Task" "Cross-platform task runner for automation scripts." "External"
+        task_runner = softwareSystem "Task" "Cross-platform task runner for automation scripts." "External, Task"
 
         developer -> platform "Develops and runs locally" "Task, Tilt, kubectl, Kustomize, Helm"
         developer -> tilt "Configures live-update deployments" "CLI"
@@ -394,6 +396,18 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
 
             element "Tilt" {
                 icon "icons/Tilt.jpeg"
+            }
+
+            element "k3d" {
+                icon "icons/k3d.png"
+            }
+
+            element "Kubernetes" {
+                icon "icons/Kubernetes.jpg"
+            }
+
+            element "Task" {
+                icon "icons/Task.png"
             }
 
             element "HTTPS" {
