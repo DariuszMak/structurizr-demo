@@ -305,47 +305,47 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
             }
 
             element "Database" {
-                icon "icons/Python.png"
+                icon "icons/Database.png"
             }
 
             element "Prometheus" {
-                icon "icons/Python.png"
+                icon "icons/Prometheus.png"
             }
 
             element "Grafana" {
-                icon "icons/Python.png"
+                icon "icons/Grafana.png"
             }
 
             element "Filebeat" {
-                icon "icons/Python.png"
+                icon "icons/Filebeat.jpg"
             }
 
             element "Elastic" {
-                icon "icons/Python.png"
+                icon "icons/Elastic.png"
             }
 
             element "Kibana" {
-                icon "icons/Python.png"
+                icon "icons/Kibana.png"
             }
 
             element "CLI" {
-                icon "icons/Python.png"
+                icon "icons/CLI.png"
             }
 
             element "Docker" {
-                icon "icons/Python.png"
+                icon "icons/Docker.png"
             }
 
             element "Helm" {
-                icon "icons/Python.png"
+                icon "icons/Helm.png"
             }
 
             element "HTTPS" {
-                icon "icons/Python.png"
+                icon "icons/Https.png"
             }
 
             element "HTTP" {
-                icon "icons/Python.png"
+                icon "icons/Http.png"
             }
         }
     }
