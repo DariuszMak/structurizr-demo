@@ -293,7 +293,59 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
             }
 
             element "Python" {
-                icon "icons/python.png"
+                icon "icons/Python.png"
+            }
+
+            element "FastAPI" {
+                icon "icons/Python.png"
+            }
+
+            element "Django" {
+                icon "icons/Python.png"
+            }
+
+            element "Database" {
+                icon "icons/Python.png"
+            }
+
+            element "Prometheus" {
+                icon "icons/Python.png"
+            }
+
+            element "Grafana" {
+                icon "icons/Python.png"
+            }
+
+            element "Filebeat" {
+                icon "icons/Python.png"
+            }
+
+            element "Elastic" {
+                icon "icons/Python.png"
+            }
+
+            element "Kibana" {
+                icon "icons/Python.png"
+            }
+
+            element "CLI" {
+                icon "icons/Python.png"
+            }
+
+            element "Docker" {
+                icon "icons/Python.png"
+            }
+
+            element "Helm" {
+                icon "icons/Python.png"
+            }
+
+            element "HTTPS" {
+                icon "icons/Python.png"
+            }
+
+            element "HTTP" {
+                icon "icons/Python.png"
             }
         }
     }
