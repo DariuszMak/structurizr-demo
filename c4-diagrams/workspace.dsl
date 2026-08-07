@@ -35,7 +35,9 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
                 fastapi_user_repository = component "User Repository" "Handles user data access." "Python"{
                     tags "Python"
                 }
-                fastapi_health_router = component "Health Router" "Exposes liveness and readiness probes." "FastAPI"
+                fastapi_health_router = component "Health Router" "Exposes liveness and readiness probes." "FastAPI"{
+                    tags "FastAPI"
+                }
                 fastapi_schema_layer = component "Schemas" "Defines request and response models." "Pydantic"
                 fastapi_db_session = component "DB Session" "Manages async database sessions." "SQLAlchemy"
                 fastapi_security_helper = component "Security Helper" "Handles JWT encoding/decoding." "Python"{
