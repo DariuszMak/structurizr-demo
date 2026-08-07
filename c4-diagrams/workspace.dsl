@@ -64,6 +64,8 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
 
                 fastapi_post_repository -> fastapi_db_session "Executes queries via" "In-process"
                 fastapi_user_repository -> fastapi_db_session "Executes queries via" "In-process"
+
+                tags "FastAPI"
             }
 
             django_service = container "Django Service" "Serves Django web application." "Python, Django" {
@@ -137,6 +139,8 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
 
                 django_users_service -> django_users_repository "Uses" "In-process"
                 django_posts_service -> django_posts_repository "Uses" "In-process"
+
+                tags "Django"
             }
 
             fastapi_database = container "FastAPI Database" "Stores FastAPI application data." "SQLite" {
