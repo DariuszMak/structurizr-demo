@@ -67,10 +67,18 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
             }
 
             django_service = container "Django Service" "Serves Django web application." "Python, Django" {
-                django_users_app = component "Users App" "Manages user accounts." "Django App"
-                django_posts_app = component "Posts App" "Manages posts and related content." "Django App"
-                django_auth_app = component "Auth App" "Handles authentication endpoints." "Django App"
-                django_health_app = component "Health App" "Exposes health check endpoints." "Django App"
+                django_users_app = component "Users App" "Manages user accounts." "Django App"{
+                    tags "Django"
+                }
+                django_posts_app = component "Posts App" "Manages posts and related content." "Django App"{
+                    tags "Django"
+                }
+                django_auth_app = component "Auth App" "Handles authentication endpoints." "Django App"{
+                    tags "Django"
+                }
+                django_health_app = component "Health App" "Exposes health check endpoints." "Django App"{
+                    tags "Django"
+                }
                 django_core_settings = component "Core Settings" "Django configuration and environment loading." "Python"{
                     tags "Python"
                 }
@@ -134,17 +142,27 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
             fastapi_database = container "FastAPI Database" "Stores FastAPI application data." "SQLite" {
                 tags "Database"
             }
-
             django_database = container "Django Database" "Stores Django application data." "SQLite" {
                 tags "Database"
             }
-
-            prometheus = container "Prometheus" "Metrics collection and alerting." "Prometheus"
-            grafana = container "Grafana" "Metrics visualization and dashboards." "Grafana"
-            tempo = container "Tempo" "Distributed tracing backend." "Tempo"
-            filebeat = container "Filebeat" "Log shipping and forwarding." "Filebeat"
-            elasticsearch = container "Elasticsearch" "Log indexing and search." "Elasticsearch"
-            kibana = container "Kibana" "Log visualization and exploration." "Kibana"
+            prometheus = container "Prometheus" "Metrics collection and alerting." "Prometheus"{
+                tags "Prometheus"
+            }
+            grafana = container "Grafana" "Metrics visualization and dashboards." "Grafana"{
+                tags "Grafana"
+            }
+            tempo = container "Tempo" "Distributed tracing backend." "Tempo"{
+                tags "Tempo"
+            }
+            filebeat = container "Filebeat" "Log shipping and forwarding." "Filebeat"{
+                tags "Filebeat"
+            }            
+            elasticsearch = container "Elasticsearch" "Log indexing and search." "Elasticsearch"{
+                tags "Elastic"
+            }
+            kibana = container "Kibana" "Log visualization and exploration." "Kibana"{
+                tags "Kibana"
+            }
 
             fastapi_service.fastapi_db_session -> fastapi_database "Reads from, writes to, and migrates via Alembic" "SQL"
             django_service.django_users_repository -> django_database "Reads from and writes to" "SQL"
@@ -328,6 +346,10 @@ workspace "Local Kubernetes Cluster" "Local development platform running Python 
 
             element "Grafana" {
                 icon "icons/Grafana.png"
+            }
+
+            element "Tempo" {
+                icon "icons/Tempo.png"
             }
 
             element "Filebeat" {
