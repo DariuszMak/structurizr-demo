@@ -23,13 +23,12 @@ docker system df ;
 git reset --hard HEAD ; 
 git clean -x -d -f ; 
 
-docker run --rm -v "${PWD}.Path/c4-diagrams:/usr/local/structurizr" structurizr/cli export -workspace /usr/local/structurizr/ml_platform_architecture.dsl -format plantuml/c4plantuml ; 
-docker run --rm -v "${PWD}.Path/c4-diagrams:/usr/local/structurizr" plantuml/plantuml -tsvg /usr/local/structurizr/*.puml ; 
-
 docker run -it --rm -d -p 8081:8080 -v "${PWD}.Path/c4-diagrams:/usr/local/structurizr" -e STRUCTURIZR_WORKSPACE_FILENAME=ml_platform_architecture structurizr/structurizr local ; 
 
 Start-Sleep -Seconds 10 ; 
 Start-Process "http://127.0.0.1:8081" ; 
+
+docker run --rm --network host -v "${PWD}.Path/c4-diagrams:/usr/local/structurizr" structurizr/puppeteer http://localhost:8081/workspace/diagrams svg ; 
 ```
 
 ### Exported `.svg` images
