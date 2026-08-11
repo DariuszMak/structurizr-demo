@@ -1,5 +1,4 @@
 workspace "Python S3 LocalStack Demo" "Simple Python application demonstrating boto3 integration with LocalStack and Terraform for local development." {
-    !identifiers hierarchical
     !impliedRelationships false
 
     configuration {
@@ -10,9 +9,37 @@ workspace "Python S3 LocalStack Demo" "Simple Python application demonstrating b
 
         developer = person "Developer" "Engineer running and deploying the local S3 demo application." "External"
 
+        # Define external systems BEFORE they are referenced by components
+        terraform_infra = softwareSystem "Terraform Infrastructure" "Defines and provisions the S3 bucket resource using HashiCorp provider." "Terraform, main.tf"{
+            tags "Infrastructure"
+        }
+
+        localstack_service = softwareSystem "LocalStack Service" "Local cloud service emulator running S3 on port 4566." "Docker, LocalStack"{
+            tags "Local Environment"
+        }
+
+        docker_engine = softwareSystem "Docker Engine" "Containers the LocalStack service and manages lifecycle." "Docker"{
+            tags "Local Environment"
+        }
+
+        uv_package_manager = softwareSystem "UV Package Manager" "Handles Python dependency resolution, environment creation, and execution." "UV"{
+            tags "Tooling"
+        }
+
+        aws_cli = softwareSystem "AWS CLI" "Interacts with LocalStack endpoints for S3 operations and file transfers." "AWS CLI"{
+            tags "Tooling"
+        }
+
+        git_repo = softwareSystem "Git Repository" "Manages version control, tracks source, configs, and tasks." "Git"{
+            tags "Tooling"
+        }
+
+        coverage_engine = softwareSystem "Coverage Engine" "Measures test coverage and generates XML/HTML reports." "Python, coverage"{
+            tags "Tooling"
+        }
+
         app = softwareSystem "Python S3 Demo" "Local Python application using boto3 to interact with a simulated S3 environment, orchestrated by Task and UV." "Python 3.14, UV, boto3" {
 
-            # Components must be wrapped in a container
             app_container = container "Python Application Container" "Core execution environment" "Python" {
 
                 main_app = component "Main Application" "Entry point, loads environment, orchestrates S3 operations, and handles execution flow." "Python, src/main.py"{
@@ -83,6 +110,7 @@ workspace "Python S3 LocalStack Demo" "Simple Python application demonstrating b
                     tags "DevOps"
                 }
 
+                # Internal Component Static Relationships
                 main_app -> env_loader_module "Initializes and loads" "In-process"
                 main_app -> s3_client_module "Instantiates and calls" "In-process"
                 s3_client_module -> config_layer "Reads boto3 configuration" "In-process"
@@ -99,67 +127,27 @@ workspace "Python S3 LocalStack Demo" "Simple Python application demonstrating b
                 static_analysis -> s3_client_module "Analyzes" "CLI"
                 static_analysis -> env_loader_module "Analyzes" "CLI"
                 static_analysis -> test_suite "Analyzes" "CLI"
-                task_runner -> task_cleanup "Depends on and executes" "CLI"
-                task_runner -> task_dev_env "Depends on and executes" "CLI"
-                task_runner -> task_localstack "Depends on and executes" "CLI"
-                task_runner -> task_static "Depends on and executes" "CLI"
-                task_runner -> task_run "Depends on and executes" "CLI"
-                task_runner -> task_diagrams "Depends on and executes" "CLI"
-                task_cleanup -> git_repo "Resets and cleans" "CLI"
-                task_cleanup -> docker_engine "Stops and prunes" "CLI"
-                task_cleanup -> uv_package_manager "Cleans cache" "CLI"
-                task_dev_env -> uv_package_manager "Installs and syncs" "CLI"
-                task_localstack -> docker_engine "Starts container" "CLI"
-                task_localstack -> terraform_infra "Runs init/apply" "CLI"
-                task_localstack -> aws_cli "Uploads file" "CLI"
-                task_localstack -> localstack_service "Waits for health" "HTTP"
+
+                # Task Runner relationships synchronized to perfectly match dynamic view steps
+                task_runner -> task_dev_env "Installs Python 3.14 and syncs deps" "CLI"
+                task_runner -> task_localstack "Starts container and waits for S3" "Docker/HTTP"
+                task_runner -> task_static "Runs ruff, mypy, semgrep, coverage" "CLI"
+                task_runner -> test_suite "Runs pytest with coverage" "CLI"
+                task_runner -> task_diagrams "Generates pydeps SVGs" "CLI"
+                task_runner -> task_run "Executes application" "UV/Python"
+                task_runner -> task_cleanup "Cleans environment" "Docker/UV/Git"
+                
                 task_run -> main_app "Executes" "CLI"
-                task_run -> uv_package_manager "Runs script" "CLI"
-                task_static -> static_analysis "Executes" "CLI"
-                task_static -> test_suite "Executes" "CLI"
-                task_static -> coverage_engine "Generates report" "CLI"
+                task_static -> static_analysis "Runs format and lint checks" "CLI"
+                task_static -> test_suite "Runs unit and integration tests" "CLI"
             }
             tags "Python"
         }
 
-        # External services must be a Software System at the root of a Model, not Containers
-        terraform_infra = softwareSystem "Terraform Infrastructure" "Defines and provisions the S3 bucket resource using HashiCorp provider." "Terraform, main.tf"{
-            tags "Infrastructure"
-        }
-
-        localstack_service = softwareSystem "LocalStack Service" "Local cloud service emulator running S3 on port 4566." "Docker, LocalStack"{
-            tags "Local Environment"
-        }
-
-        docker_engine = softwareSystem "Docker Engine" "Containers the LocalStack service and manages lifecycle." "Docker"{
-            tags "Local Environment"
-        }
-
-        uv_package_manager = softwareSystem "UV Package Manager" "Handles Python dependency resolution, environment creation, and execution." "UV"{
-            tags "Tooling"
-        }
-
-        aws_cli = softwareSystem "AWS CLI" "Interacts with LocalStack endpoints for S3 operations and file transfers." "AWS CLI"{
-            tags "Tooling"
-        }
-
-        git_repo = softwareSystem "Git Repository" "Manages version control, tracks source, configs, and tasks." "Git"{
-            tags "Tooling"
-        }
-
-        coverage_engine = softwareSystem "Coverage Engine" "Measures test coverage and generates XML/HTML reports." "Python, coverage"{
-            tags "Tooling"
-        }
-
+        # Model-level relationships
         main_app -> localstack_service "Sends S3 requests to" "HTTP/HTTPS"
         s3_client_module -> localstack_service "Sends S3 requests to" "HTTP/HTTPS"
         terraform_infra -> localstack_service "Provisions bucket into" "AWS API"
-        task_runner -> uv_package_manager "Manages dependencies via" "CLI"
-        task_runner -> terraform_infra "Runs init/apply via" "CLI"
-        task_runner -> aws_cli "Runs commands via" "CLI"
-        task_runner -> docker_engine "Starts container via" "Docker CLI"
-        task_runner -> git_repo "Tracks source via" "Git CLI"
-        task_runner -> coverage_engine "Generates reports via" "CLI"
         static_analysis -> git_repo "Reads source from" "CLI"
 
         developer -> app "Develops, tests, and runs" "Task, UV, VS Code"
@@ -169,17 +157,33 @@ workspace "Python S3 LocalStack Demo" "Simple Python application demonstrating b
         developer -> aws_cli "Interacts with services" "AWS CLI"
         developer -> git_repo "Commits and manages" "Git CLI"
 
-        # Missing static relationships required to satisfy your dynamic view sequence
+        # External relationships synchronized to perfectly match dynamic view steps
         developer -> task_runner "Executes full-dev-native" "CLI"
-        task_runner -> test_suite "Runs pytest with coverage" "CLI"
+        task_runner -> terraform_infra "Applies Terraform state" "Terraform CLI"
+        
+        task_cleanup -> docker_engine "Stops and prunes containers" "Docker CLI"
+        task_cleanup -> uv_package_manager "Cleans cache" "UV CLI"
+        task_cleanup -> git_repo "Resets and cleans" "Git CLI"
+        
+        task_dev_env -> uv_package_manager "Installs and syncs" "CLI"
+        
+        task_localstack -> docker_engine "Pulls and runs localstack container" "Docker CLI"
+        task_localstack -> localstack_service "Waits for health endpoint" "HTTP"
+        task_localstack -> terraform_infra "Runs init and apply" "Terraform CLI"
+        task_localstack -> aws_cli "Copies test.txt to S3" "AWS CLI"
         task_localstack -> main_app "Opens browser for bucket" "HTTP"
+        
+        task_run -> uv_package_manager "Runs script" "CLI"
+        
+        task_static -> coverage_engine "Generates XML and HTML reports" "CLI"
+        
         task_diagrams -> main_app "Generates dependency graph" "CLI"
         task_diagrams -> s3_client_module "Generates dependency graph" "CLI"
         task_diagrams -> env_loader_module "Generates dependency graph" "CLI"
         task_diagrams -> test_suite "Generates dependency graph" "CLI"
         task_diagrams -> coverage_engine "Applies dark theme to SVGs" "PowerShell"
         
-        tags "Local Development"
+        #tags "Local Development"
     }
 
     views {
@@ -199,14 +203,12 @@ workspace "Python S3 LocalStack Demo" "Simple Python application demonstrating b
             autolayout lr
         }
 
-        # Component view must be bound to a container, not a softwareSystem
         component app_container "Components" {
             include *
             autolayout lr
         }
 
-        # 'workflow' is not a view type. Changing to 'dynamic' Landscape
-        dynamic * "DevelopmentWorkflow" {
+        dynamic app_container "DevelopmentWorkflow" {
             developer -> task_runner "Executes full-dev-native" "CLI"
             task_runner -> task_dev_env "Installs Python 3.14 and syncs deps" "CLI"
             task_runner -> task_localstack "Starts container and waits for S3" "Docker/HTTP"
@@ -308,7 +310,6 @@ workspace "Python S3 LocalStack Demo" "Simple Python application demonstrating b
                 opacity 80
             }
 
-            # Relationship styles must use the 'relationship' tag, not 'element'
             relationship "Relationship" {
                 thickness 2
                 color #EEEA1E
@@ -325,74 +326,74 @@ workspace "Python S3 LocalStack Demo" "Simple Python application demonstrating b
             element "Python" {
                 icon "icons/Python.png"
             }
-
-            element "Terraform" {
-                icon "icons/Terraform.png"
-            }
-
-            element "LocalStack" {
-                icon "icons/LocalStack.png"
-            }
-
-            element "Docker" {
-                icon "icons/Docker.png"
-            }
-
-            element "UV" {
-                icon "icons/UV.png"
-            }
-
-            element "AWS" {
-                icon "icons/AWS.png"
-            }
-
-            element "Pytest" {
-                icon "icons/Pytest.png"
-            }
-
-            element "Ruff" {
-                icon "icons/Ruff.png"
-            }
-
-            element "MyPy" {
-                icon "icons/MyPy.png"
-            }
-
-            element "Semgrep" {
-                icon "icons/Semgrep.png"
-            }
-
-            element "Task" {
-                icon "icons/Task.png"
-            }
-
-            element "CLI" {
-                icon "icons/CLI.png"
-            }
-
-            element "HTTP" {
-                icon "icons/Http.png"
-            }
-
-            element "HTTPS" {
-                icon "icons/Https.png"
-            }
-
-            element "TOML" {
-                icon "icons/TOML.png"
-            }
-
-            element "YAML" {
-                icon "icons/YAML.png"
-            }
-
-            element "Git" {
-                icon "icons/Git.png"
-            }
-
-            element "Coverage" {
-                icon "icons/Coverage.png"
-            }
+# 
+#             element "Terraform" {
+#                 icon "icons/Terraform.png"
+#             }
+# 
+#             element "LocalStack" {
+#                 icon "icons/LocalStack.png"
+#             }
+# 
+#             element "Docker" {
+#                 icon "icons/Docker.png"
+#             }
+# 
+#             element "UV" {
+#                 icon "icons/UV.png"
+#             }
+# 
+#             element "AWS" {
+#                 icon "icons/AWS.png"
+#             }
+# 
+#             element "Pytest" {
+#                 icon "icons/Pytest.png"
+#             }
+# 
+#             element "Ruff" {
+#                 icon "icons/Ruff.png"
+#             }
+# 
+#             element "MyPy" {
+#                 icon "icons/MyPy.png"
+#             }
+# 
+#             element "Semgrep" {
+#                 icon "icons/Semgrep.png"
+#             }
+# 
+#             element "Task" {
+#                 icon "icons/Task.png"
+#             }
+# 
+#             element "CLI" {
+#                 icon "icons/CLI.png"
+#             }
+# 
+#             element "HTTP" {
+#                 icon "icons/Http.png"
+#             }
+# 
+#             element "HTTPS" {
+#                 icon "icons/Https.png"
+#             }
+# 
+#             element "TOML" {
+#                 icon "icons/TOML.png"
+#             }
+# 
+#             element "YAML" {
+#                 icon "icons/YAML.png"
+#             }
+# 
+#             element "Git" {
+#                 icon "icons/Git.png"
+#             }
+# 
+#             element "Coverage" {
+#                 icon "icons/Coverage.png"
+#             }
         }
     }
 }
