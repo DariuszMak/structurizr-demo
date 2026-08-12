@@ -48,10 +48,10 @@ Start-Process "http://127.0.0.1:8081" ;
     </tr>
     <tr>
     <td align="center">
-        <img src="images/generated/FastAPIComponents-dark.svg" width="600px">
+        <img src="images/generated/Components-dark.svg" width="600px">
     </td>
     <td></td>
     <td align="center">
-        <img src="images/generated/DjangoComponents-dark.svg" width="600px">
+        <img src="images/generated/DevelopmentWorkflow-dark.svg" width="600px">
     </td>
 </table>
