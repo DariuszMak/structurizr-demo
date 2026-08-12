@@ -325,74 +325,74 @@ workspace "Python S3 LocalStack Demo" "Simple Python application demonstrating b
             element "Python" {
                 icon "icons/Python.png"
             }
+
+            element "Terraform" {
+                icon "icons/Terraform.png"
+            }
+
+            element "LocalStack" {
+                icon "icons/LocalStack.png"
+            }
  
-#             element "Terraform" {
-#                 icon "icons/Terraform.png"
-#             }
-# 
-#            element "LocalStack" {
-#                icon "icons/LocalStack.png"
-#            }
- 
-             element "Docker" {
-                 icon "icons/Docker.png"
-             }
- 
-#            element "UV" {
-#                icon "icons/UV.png"
-#            }
- 
-#            element "AWS" {
-#                icon "icons/AWS.png"
-#            }
- 
-#           element "Pytest" {
-#               icon "icons/Pytest.png"
-#           }
- 
-#           element "Ruff" {
-#               icon "icons/Ruff.png"
-#           }
- 
-#             element "MyPy" {
-#                 icon "icons/MyPy.png"
-#             }
- 
-#            element "Semgrep" {
-#                icon "icons/Semgrep.png"
-#            }
- 
-             element "Task" {
-                 icon "icons/Task.png"
-             }
- 
-             element "CLI" {
-                 icon "icons/CLI.png"
-             }
- 
-             element "HTTP" {
-                 icon "icons/Http.png"
-             }
- 
-             element "HTTPS" {
-                 icon "icons/Https.png"
-             }
- 
-#            element "TOML" {
-#                icon "icons/TOML.png"
-#            }
- 
-#             element "YAML" {
-#                 icon "icons/YAML.png"
-#             }
- 
-#            element "Git" {
-#                icon "icons/Git.png"
-#            }
- 
-#             element "Coverage" {
-#                 icon "icons/Coverage.png"
-#             }
+            element "Docker" {
+                icon "icons/Docker.png"
+            }
+
+            element "UV" {
+                icon "icons/UV.png"
+            }
+
+            element "AWS" {
+                icon "icons/AWS.png"
+            }
+
+            element "Pytest" {
+                icon "icons/Pytest.png"
+            }
+
+            element "Ruff" {
+                icon "icons/Ruff.png"
+            }
+
+            element "MyPy" {
+                icon "icons/MyPy.png"
+            }
+
+            element "Semgrep" {
+                icon "icons/Semgrep.png"
+            }
+
+            element "Task" {
+                icon "icons/Task.png"
+            }
+
+            element "CLI" {
+                icon "icons/CLI.png"
+            }
+
+            element "HTTP" {
+                icon "icons/Http.png"
+            }
+
+            element "HTTPS" {
+                icon "icons/Https.png"
+            }
+
+            element "TOML" {
+                icon "icons/TOML.png"
+            }
+
+            element "YAML" {
+                icon "icons/YAML.png"
+            }
+
+            element "Git" {
+                icon "icons/Git.png"
+            }
+
+            element "Coverage" {
+                icon "icons/Coverage.png"
+            }
         }
     }
 }
