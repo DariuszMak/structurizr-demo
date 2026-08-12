@@ -379,7 +379,7 @@ workspace "Python S3 LocalStack Demo" "Simple Python application demonstrating b
             }
 
             element "TOML" {
-                icon "icons/TOML.png"
+                icon "icons/Toml.png"
             }
 
             element "YAML" {
