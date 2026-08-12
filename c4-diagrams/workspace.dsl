@@ -11,31 +11,31 @@ workspace "Python S3 LocalStack Demo" "Simple Python application demonstrating b
 
         # Define external systems BEFORE they are referenced by components
         terraform_infra = softwareSystem "Terraform Infrastructure" "Defines and provisions the S3 bucket resource using HashiCorp provider." "Terraform, main.tf"{
-            tags "Infrastructure"
+            tags "Infrastructure, Terraform"
         }
 
         localstack_service = softwareSystem "LocalStack Service" "Local cloud service emulator running S3 on port 4566." "Docker, LocalStack"{
-            tags "Local Environment"
+            tags "Local Environment, LocalStack, Docker"
         }
 
         docker_engine = softwareSystem "Docker Engine" "Containers the LocalStack service and manages lifecycle." "Docker"{
-            tags "Local Environment"
+            tags "Local Environment, Docker"
         }
 
         uv_package_manager = softwareSystem "UV Package Manager" "Handles Python dependency resolution, environment creation, and execution." "UV"{
-            tags "Tooling"
+            tags "Tooling, UV, CLI"
         }
 
         aws_cli = softwareSystem "AWS CLI" "Interacts with LocalStack endpoints for S3 operations and file transfers." "AWS CLI"{
-            tags "Tooling"
+            tags "Tooling, AWS, CLI"
         }
 
         git_repo = softwareSystem "Git Repository" "Manages version control, tracks source, configs, and tasks." "Git"{
-            tags "Tooling"
+            tags "Tooling, Git"
         }
 
         coverage_engine = softwareSystem "Coverage Engine" "Measures test coverage and generates XML/HTML reports." "Python, coverage"{
-            tags "Tooling"
+            tags "Tooling, Coverage, Python"
         }
 
         app = softwareSystem "Python S3 Demo" "Local Python application using boto3 to interact with a simulated S3 environment, orchestrated by Task and UV." "Python 3.14, UV, boto3" {
@@ -43,11 +43,11 @@ workspace "Python S3 LocalStack Demo" "Simple Python application demonstrating b
             app_container = container "Python Application Container" "Core execution environment" "Python" {
 
                 main_app = component "Main Application" "Entry point, loads environment, orchestrates S3 operations, and handles execution flow." "Python, src/main.py"{
-                    tags "Python"
+                    tags "Python, CLI"
                 }
 
                 s3_client_module = component "S3 Client Module" "Wraps boto3 client, manages S3Settings dataclass, and implements upload, download, list, and delete operations." "Python, src/s3_client.py"{
-                    tags "Python"
+                    tags "Python, AWS"
                 }
 
                 env_loader_module = component "Env Loader Module" "Parses .dev.env file, handles key-value extraction, and populates os.environ safely." "Python, src/env_loader.py"{
@@ -55,59 +55,59 @@ workspace "Python S3 LocalStack Demo" "Simple Python application demonstrating b
                 }
 
                 config_layer = component "Configuration Layer" "Manages pyproject.toml, mypy, ruff, coverage, and dependency definitions." "TOML, YAML"{
-                    tags "Configuration"
+                    tags "Configuration, TOML, YAML"
                 }
 
                 test_suite = component "Test Suite" "Unit and integration tests using pytest and moto, covering client, loader, and main logic." "Python, tests/"{
-                    tags "Testing"
+                    tags "Testing, Pytest, Python"
                 }
 
                 conftest_module = component "Test Configuration" "Provides s3_settings and s3_client fixtures with moto mock_aws context." "Python, tests/conftest.py"{
-                    tags "Testing"
+                    tags "Testing, Pytest, Python"
                 }
 
                 test_env_loader = component "Env Loader Tests" "Validates variable loading, comment skipping, override prevention, and logging." "Python, tests/test_env_loader.py"{
-                    tags "Testing"
+                    tags "Testing, Pytest, Python"
                 }
 
                 test_main = component "Main Tests" "Validates run() execution flow, bucket existence checks, and upload logic." "Python, tests/test_main.py"{
-                    tags "Testing"
+                    tags "Testing, Pytest, Python"
                 }
 
                 test_s3_client = component "S3 Client Tests" "Validates from_env defaults/overrides, bucket_exists, upload, list, download, delete, and prefix filtering." "Python, tests/test_s3_client.py"{
-                    tags "Testing"
+                    tags "Testing, Pytest, Python"
                 }
 
                 static_analysis = component "Static Analysis" "Runs ruff, mypy, semgrep, vulture, lint-imports, pip-audit, and coverage reporting." "Python, scripts/format_and_lint.ps1"{
-                    tags "DevOps"
+                    tags "DevOps, Ruff, MyPy, Semgrep, Coverage, CLI"
                 }
 
                 task_runner = component "Task Runner" "Orchestrates setup, terraform, tests, cleanup, and diagram generation via Taskfile.yml." "YAML, Taskfile.yml"{
-                    tags "DevOps"
+                    tags "DevOps, Task, YAML"
                 }
 
                 task_cleanup = component "Cleanup Task" "Stops Docker containers, kills ports, cleans uv cache, resets git, and removes volumes." "PowerShell, tasks/cleanup.ps1"{
-                    tags "DevOps"
+                    tags "DevOps, Task, Docker, UV, Git"
                 }
 
                 task_dev_env = component "Dev Environment Task" "Installs Python 3.14, pins version, and syncs dependencies with uv." "PowerShell, tasks/dev_uv_environment.ps1"{
-                    tags "DevOps"
+                    tags "DevOps, Task, Python, UV"
                 }
 
                 task_diagrams = component "Diagram Generation Task" "Generates pydeps SVG dependency graphs and applies dark theme styling." "PowerShell, tasks/generate_diagrams.ps1"{
-                    tags "DevOps"
+                    tags "DevOps, Task"
                 }
 
                 task_localstack = component "LocalStack Terraform Task" "Starts LocalStack Docker container, waits for S3 health, runs terraform init/apply, and uploads test file." "PowerShell, tasks/localstack_terraform.ps1"{
-                    tags "DevOps"
+                    tags "DevOps, Task, LocalStack, Terraform, AWS, Docker"
                 }
 
                 task_run = component "Run Application Task" "Executes the main Python script using uv." "PowerShell, tasks/run_native_dev_application.ps1"{
-                    tags "DevOps"
+                    tags "DevOps, Task, Python, UV"
                 }
 
                 task_static = component "Static Analysis Task" "Triggers format_and_lint and pytest with coverage, opens HTML report." "PowerShell, tasks/static_analysis_and_tests.ps1"{
-                    tags "DevOps"
+                    tags "DevOps, Task, Ruff, MyPy, Pytest, Coverage"
                 }
 
                 # Internal Component Static Relationships
@@ -141,7 +141,7 @@ workspace "Python S3 LocalStack Demo" "Simple Python application demonstrating b
                 task_static -> static_analysis "Runs format and lint checks" "CLI"
                 task_static -> test_suite "Runs unit and integration tests" "CLI"
             }
-            tags "Python"
+            tags "Python, AWS, UV"
         }
 
         # Model-level relationships
@@ -333,7 +333,7 @@ workspace "Python S3 LocalStack Demo" "Simple Python application demonstrating b
             element "LocalStack" {
                 icon "icons/LocalStack.png"
             }
- 
+
             element "Docker" {
                 icon "icons/Docker.png"
             }
