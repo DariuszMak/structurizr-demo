@@ -9,7 +9,6 @@ workspace "Python S3 LocalStack Demo" "Simple Python application demonstrating b
 
         developer = person "Developer" "Engineer running and deploying the local S3 demo application." "External"
 
-        # Define external systems BEFORE they are referenced by components
         terraform_infra = softwareSystem "Terraform Infrastructure" "Defines and provisions the S3 bucket resource using HashiCorp provider." "Terraform, main.tf"{
             tags "Infrastructure, Terraform"
         }
@@ -110,7 +109,6 @@ workspace "Python S3 LocalStack Demo" "Simple Python application demonstrating b
                     tags "DevOps, Task, Ruff, MyPy, Pytest, Coverage"
                 }
 
-                # Internal Component Static Relationships
                 main_app -> env_loader_module "Initializes and loads" "In-process"
                 main_app -> s3_client_module "Instantiates and calls" "In-process"
                 s3_client_module -> config_layer "Reads boto3 configuration" "In-process"
@@ -128,7 +126,6 @@ workspace "Python S3 LocalStack Demo" "Simple Python application demonstrating b
                 static_analysis -> env_loader_module "Analyzes" "CLI"
                 static_analysis -> test_suite "Analyzes" "CLI"
 
-                # Task Runner relationships synchronized to perfectly match dynamic view steps
                 task_runner -> task_dev_env "Installs Python 3.14 and syncs deps" "CLI"
                 task_runner -> task_localstack "Starts container and waits for S3" "Docker/HTTP"
                 task_runner -> task_static "Runs ruff, mypy, semgrep, coverage" "CLI"
@@ -144,7 +141,6 @@ workspace "Python S3 LocalStack Demo" "Simple Python application demonstrating b
             tags "Python, AWS, UV"
         }
 
-        # Model-level relationships
         main_app -> localstack_service "Sends S3 requests to" "HTTP/HTTPS"
         s3_client_module -> localstack_service "Sends S3 requests to" "HTTP/HTTPS"
         terraform_infra -> localstack_service "Provisions bucket into" "AWS API"
@@ -157,7 +153,6 @@ workspace "Python S3 LocalStack Demo" "Simple Python application demonstrating b
         developer -> aws_cli "Interacts with services" "AWS CLI"
         developer -> git_repo "Commits and manages" "Git CLI"
 
-        # External relationships synchronized to perfectly match dynamic view steps
         developer -> task_runner "Executes full-dev-native" "CLI"
         task_runner -> terraform_infra "Applies Terraform state" "Terraform CLI"
         
